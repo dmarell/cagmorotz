@@ -1,5 +1,5 @@
 <descriptor>
-    <version>1</version>
+    <version>2</version>
     <accesses>
         <access>tts</access>
         <access>button</access>
@@ -24,5 +24,5 @@
     </parameters>
     <interruptible>true</interruptible>
     <awake>true</awake>
-    <callback>http://callback_url</callback>
+    <callback>http://marell.se/lab/karotz-callback</callback>
 </descriptor>

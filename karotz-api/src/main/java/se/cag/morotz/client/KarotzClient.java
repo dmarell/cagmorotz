@@ -1,3 +1,7 @@
+/*
+ * @author Daniel Marell
+ *         Created 2012-01-11 14:37
+ */
 package se.cag.morotz.client;
 
 import com.sun.jersey.api.client.Client;
@@ -27,10 +31,6 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
-/**
- * @author Daniel Marell
- *         Created 2012-01-11 14:37
- */
 public class KarotzClient implements KarotzApi {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -83,6 +83,23 @@ public class KarotzClient implements KarotzApi {
     public void setLedOff() {
         log.trace("setLedOff");
         //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void takePicture(String url) throws KarotzException {
+        log.trace("takePicture,url=" + url);
+        MultivaluedMap<String, String> parameters = new MultivaluedMapImpl();
+        parameters.add("apikey", apiKey);
+        parameters.add("interactiveid", getInteractiveId());
+        parameters.add("action", "photo");
+        parameters.add("url", url);
+        WebResource webResource = client.resource("http://api.karotz.com/api/karotz/webcam");
+        ClientResponse response = webResource.queryParams(parameters).get(ClientResponse.class);
+        String result = response.getEntity(String.class);
+        String code = parseResponse(result, "code");
+        if (!"OK".equalsIgnoreCase(code)) {
+            throw new KarotzException("failed to do action: " + code);
+        }
     }
 
     public synchronized void startInteractiveMode() throws KarotzException {

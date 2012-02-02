@@ -1,0 +1,24 @@
+<!--
+Put in classpath or use
+-Dlogback.configurationFile=/path/to/logback.xml
+-->
+<configuration scan="true">
+    <!--<appender name="FILE" class="ch.qos.logback.core.FileAppender">-->
+        <!--<file>sia-csr.log</file>-->
+        <!--<layout class="ch.qos.logback.classic.PatternLayout">-->
+            <!--<Pattern>%date %level [%thread] %logger{10} [%file:%line] %msg%n</Pattern>-->
+        <!--</layout>-->
+    <!--</appender>-->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%date %level [%thread] %logger{10} [%file:%line] %msg%n</Pattern>
+        </layout>
+    </appender>
+
+    <!--<logger name="se.cag.morotz.client" level="trace"/>-->
+
+    <root level="trace">
+        <!--<appender-ref ref="FILE"/>-->
+        <appender-ref ref="STDOUT"/>
+    </root>
+</configuration>

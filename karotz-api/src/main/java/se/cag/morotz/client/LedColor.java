@@ -1,9 +1,9 @@
-package se.cag.morotz.client;
-
-/**
+/*
  * @author Daniel Marell
  *         Created 2012-01-12 17:44
  */
+package se.cag.morotz.client;
+
 public enum LedColor {
     RED("FF0000"),
     GREEN("00FF00"),
