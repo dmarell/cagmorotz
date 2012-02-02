@@ -45,6 +45,9 @@
     <orderEntry type="library" name="Maven: org.codehaus.jackson:jackson-mapper-asl:1.8.3" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.jackson:jackson-jaxrs:1.8.3" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.jackson:jackson-xc:1.8.3" level="project" />
+    <orderEntry type="library" name="Maven: com.sun.jersey.contribs:jersey-multipart:1.10" level="project" />
+    <orderEntry type="library" name="Maven: org.jvnet:mimepull:1.6" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.commons:commons-io:1.3.2" level="project" />
   </component>
 </module>
 

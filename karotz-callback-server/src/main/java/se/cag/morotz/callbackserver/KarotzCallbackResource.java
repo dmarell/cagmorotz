@@ -4,12 +4,18 @@
  */
 package se.cag.morotz.callbackserver;
 
+import com.sun.jersey.multipart.BodyPart;
+import com.sun.jersey.multipart.MultiPart;
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 @Path("/karotz-callback")
 public class KarotzCallbackResource {
@@ -25,39 +31,37 @@ public class KarotzCallbackResource {
     }
 
     @POST
-    @Consumes("image/png")
+    @Consumes("multipart/mixed")
     @Path("image")
-    public Response putImage(InputStream stream) {
-        log.trace("putImage");
-        try {
-            writeToFile(stream, new File("image.png"));
-        } catch (IOException e) {
-            String msg = "Failed to write image file:" + e.getMessage();
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(msg).build();
-        } finally {
-            try {
-                stream.close();
-            } catch (IOException ignore) {
-            }
+    public Response post(MultiPart multiPart) {
+        log.info("Received post multipart/mixed,parts=" + multiPart.getBodyParts().size());
+        for (BodyPart p : multiPart.getBodyParts()) {
+            log.info("part: MediaType=" + p.getMediaType());
         }
-        log.info("wrote file image.png");
         return Response.ok().build();
     }
 
-    public void writeToFile(InputStream is, File file) throws IOException {
-        DataOutputStream out = null;
+    @POST
+    @Consumes("image/jpeg")
+    @Path("image")
+    public Response uploadImage(File tmpFile) {
+        log.info("Received uploadImage,tmpFile=" + tmpFile);
+        File destFile = new File("/mnt/raid/public/public-downloads/karotzlab/karotz-" + dateAndTimeNow() + ".jpg");
         try {
-            out = new DataOutputStream(
-                    new BufferedOutputStream(new FileOutputStream(file)));
-            int c;
-            while ((c = is.read()) != -1) {
-                out.writeByte(c);
-            }
-        } finally {
-            if (out != null) {
-                out.close();
-            }
+            FileUtils.copyFile(tmpFile, destFile);
+        } catch (IOException e) {
+            String msg = "Failed to write image file:" + e.getMessage();
+            log.error(msg);
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(msg).build();
         }
+        log.info("wrote image file " + destFile.getAbsolutePath());
+        return Response.ok().build();
+    }
+
+    public static String dateAndTimeNow() {
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        return sdf.format(cal.getTime());
     }
 }
 
