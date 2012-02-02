@@ -1,0 +1,28 @@
+<descriptor>
+    <version>1</version>
+    <accesses>
+        <access>tts</access>
+        <access>button</access>
+        <access>ears</access>
+        <access>led</access>
+        <access>multimedia</access>
+        <access>webcam</access>
+        <access>asr</access>
+        <access>rfid</access>
+        <access>http</access>
+        <access>file</access>
+        <access>serial</access>
+    </accesses>
+
+    <editor>editorName</editor>
+    <asrName>asrName</asrName>
+    <deployment>external</deployment>
+    <multiConf>true</multiConf>
+
+    <parameters>
+        <parameter key="showInstallUuid" value="true"/>
+    </parameters>
+    <interruptible>true</interruptible>
+    <awake>true</awake>
+    <callback>http://callback_url</callback>
+</descriptor>
