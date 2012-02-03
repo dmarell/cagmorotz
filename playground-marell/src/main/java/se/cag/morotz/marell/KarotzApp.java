@@ -29,7 +29,7 @@ public class KarotzApp {
         int port = 9998;
         String baseUri = "http://" + ip + ":" + port + "/";
         
-        String marellBaseUri = "http://marell.se/lab/";
+        String marellBaseUri = "http://marell.se/lab/marell/";
 
         HttpServer server = HttpServerFactory.create(baseUri,
                 new PackagesResourceConfig("se.cag.morotz.callbackserver"));
@@ -45,10 +45,10 @@ public class KarotzApp {
             log.info("setLedColor ok");
 
             
-            c.takePicture(marellBaseUri + "karotz-callback/image");
+            c.takePicture(baseUri + "karotz-callback/image");
             log.info("takePicture ok");
 
-            Thread.sleep(3000);
+            Thread.sleep(30000);
 
             c.stopInteractiveMode();
             log.info("stopInteractiveMode ok");

@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.File;
 import java.io.IOException;
@@ -31,18 +32,30 @@ public class KarotzCallbackResource {
     }
 
     @POST
-    @Consumes("multipart/mixed")
+    @Consumes("multipart/form-data")
     @Path("image")
     public Response post(MultiPart multiPart) {
         log.info("Received post multipart/mixed,parts=" + multiPart.getBodyParts().size());
         for (BodyPart p : multiPart.getBodyParts()) {
             log.info("part: MediaType=" + p.getMediaType());
+            if (p.getMediaType().isCompatible(MediaType.valueOf("image/jpeg"))) {
+                File tmpFile = p.getEntityAs(File.class);
+                File destFile = new File("/Users/daniel/Downloads/karotz-" + dateAndTimeNow() + ".jpg");
+                try {
+                    FileUtils.copyFile(tmpFile, destFile);
+                } catch (IOException e) {
+                    String msg = "Failed to write image file:" + e.getMessage();
+                    log.error(msg);
+                    return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(msg).build();
+                }
+                log.info("wrote image file " + destFile.getAbsolutePath());
+            }
         }
         return Response.ok().build();
     }
 
     @POST
-    @Consumes("image/jpeg")
+    @Consumes("*/*")
     @Path("image")
     public Response uploadImage(File tmpFile) {
         log.info("Received uploadImage,tmpFile=" + tmpFile);
